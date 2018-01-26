@@ -86,5 +86,58 @@ function cargar(campo,control){
   });
 }
 
+// Evento clic del boton muestra todo, mediante ajax recupera todos los datos de propiedades
+$("#mostrarTodos").click(function(){
+  $.ajax({
+    url: './muestra_todo.php',
+    dataType: "json",
+    cache: false,
+    contentType: false,
+    processData: false,
+    data: "hola",
+    type: 'post',
+    success: function(data){
+      muestraResultado(data.cadena);
+     },
+    error: function(){
+      alert("error al enviar los datos");
+     }
+    });
+});
 
+// Funcion que recibe los datos y los acomoda en formato de tabla
+function muestraResultado(misDatos){
+  var tabla='No existen datos con los parametros especificados<br>';
+  if(misDatos!=']'){ 
+    tabla='<table class="bordered striped tablare">';
+    tabla+='<thead><tr>';
+    tabla+='<th>Id</th>';
+    tabla+='<th>Direccion</th>';
+    tabla+='<th>Ciudad</th>';
+    tabla+='<th>Telefono</th>';
+    tabla+='<th>Codigo Postal</th>';
+    tabla+='<th>Tipo</th>';
+    tabla+='<th>Precio</th>';
+    tabla+='</tr></thead><tbody>';
+
+    var salida='';
+    var i;
+    var json=JSON.parse(misDatos);
+    for(i=0;i<json.length;i++){
+        salida+='<tr>';
+        salida+='<td>'+json[i].Id+'</td>';
+	   salida+='<td>'+json[i].Direccion+'</td>';
+	   salida+='<td>'+json[i].Ciudad+'</td>';
+	   salida+='<td>'+json[i].Telefono+'</td>';
+	   salida+='<td>'+json[i].Codigo_Postal+'</td>';
+	   salida+='<td>'+json[i].Tipo+'</td>';
+	   salida+='<td>'+json[i].Precio+'</td>';
+	   salida+='</tr>';
+     }
+     tabla+=salida+'</tbody></table>';
+    }
+    
+
+    $('#datos').html(tabla);
+   }
 

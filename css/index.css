@@ -143,3 +143,9 @@ video#vidFondo {
 .card-action{
   text-align: right;
 }
+.tablare{
+  font-size: 11px;
+}
+#datos{
+  width: 100%;  
+}
