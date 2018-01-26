@@ -1,4 +1,4 @@
-/*
+﻿/*
   Creación de una función personalizada para jQuery que detecta cuando se detiene el scroll en la página
 */
 $.fn.scrollEnd = function(callback, timeout) {
@@ -54,7 +54,7 @@ playVideoOnScroll();
 $(document).ready(function(){ 
   cargar('Ciudad','#selectCiudad');
   cargar('Tipo','#selectTipo');
-
+  $("#formulario").submit(buscar);
 })
 
 //Carga un combo indicando el campo e identificador de control DOM
@@ -141,3 +141,33 @@ function muestraResultado(misDatos){
     $('#datos').html(tabla);
    }
 
+//Funcion que se ejecuta cuando se hace click en buscar
+function buscar(event){
+  event.preventDefault();
+  $('#datos').html('');
+  var form_data = new FormData();
+  var minimo=$('#rangoPrecio').data('ionRangeSlider').old_from;
+  var maximo=$('#rangoPrecio').data('ionRangeSlider').old_to;
+  var tipo=$('#selectTipo').val();
+  var ciudad=$('#selectCiudad').val();
+  form_data.append('minimo', minimo);
+  form_data.append('maximo', maximo);
+  form_data.append('tipo', tipo);
+  form_data.append('ciudad', ciudad);  
+  $.ajax({
+    url: './buscar.php',
+    dataType: "json",
+    cache: false,
+    contentType: false,
+    processData: false,
+    data: form_data,
+    type: 'post',
+    success: function(data){
+      // alert(data.cadena); 
+       muestraResultado(data.cadena);
+     },
+    error: function(xhr, textStatus, error){
+      alert(error);
+     }
+  });
+}
